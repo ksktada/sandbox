@@ -2,7 +2,7 @@ use axum::{
     routing::get,
     Router,
 };
-
+use std::net::SocketAddr;
 use tokio::signal;
 
 #[tokio::main]
@@ -11,7 +11,8 @@ async fn main() {
     let app = Router::new().route("/", get(|| async { "Hello, World!" }));
 
     // run it with hyper on localhost:3000
-    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .with_graceful_shutdown(shutdown_signal())
         .await
