@@ -2,6 +2,7 @@ use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 #[get("/")]
 async fn hello() -> impl Responder {
+    print!("woooo");
     HttpResponse::Ok().body("Hello world!")
 }
 
@@ -22,6 +23,8 @@ async fn main() -> std::io::Result<()> {
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
     })
+    .shutdown_timeout(60)
+    .workers(2)
     .bind(("127.0.0.1", 8080))?
     .run()
     .await
