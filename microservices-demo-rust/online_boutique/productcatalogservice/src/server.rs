@@ -32,7 +32,7 @@ impl ProductCatalogService for ProductCatalogServiceImpl {
             },
         };
 
-        Ok(Response::new(reply)) 
+        Ok(Response::new(product)) 
     }
 }
 
