@@ -13,7 +13,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let request = tonic::Request::new(Empty{});
 
-    let response = client.list_product(request).await?;
+    let response = client.list_products(request).await?;
 
     println!("RESPONSE={:?}", response);
 
