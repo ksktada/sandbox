@@ -16,7 +16,7 @@ struct Product {
     categories: Vec<String>,
     description: String,
     picture: String,
-    price_usd: Money,
+    price_usd: Option<Money>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
