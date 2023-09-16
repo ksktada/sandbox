@@ -23,3 +23,11 @@ cargo run
 ```sh
 rustup update
 ```
+
+## Tips
+
+### JSON
+
+[json_to_struct](./json_to_struct)
+
+`products.json` is from [here](https://github.com/GoogleCloudPlatform/microservices-demo).  

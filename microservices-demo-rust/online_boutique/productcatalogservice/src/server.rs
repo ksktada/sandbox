@@ -2,12 +2,23 @@ use tonic::{transport::Server, Request, Response, Status};
 
 // online_boutique.proto 内のアイテムをモジュールとしてインポート
 pub mod online_boutique {
+    use serde::Deserialize;
     tonic::include_proto!("online_boutique"); 
 }
 
 // 上記モジュール内のアイテムを呼び出す
 use online_boutique::product_catalog_service_server::{ProductCatalogService, ProductCatalogServiceServer};
 use online_boutique::{Empty, Product, Money, ListProductsResponse, GetProductRequest, SearchProductsRequest, SearchProductsResponse};
+
+use serde::Deserialize;
+use std::fs::File;
+use std::io::BufReader;
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all(deserialize = "camelCase"))]
+struct Products {
+    products: Vec<Product>,
+}
 
 #[derive(Debug, Default)]
 pub struct ProductCatalogServiceImpl {}
@@ -20,18 +31,13 @@ impl ProductCatalogService for ProductCatalogServiceImpl {
     ) -> Result<Response<ListProductsResponse>, Status> { 
         println!("Got a request: {:?}", request);
 
-        let products: Vec<Product> = vec![Product {
-            id: "1".to_string(), 
-            name: "test".to_string(),
-            categories: vec!["test".to_string()],
-            description: "this is a test".to_string(),
-            picture: "maybe url".to_string(),
-            price_usd: Some(Money {
-                currency_code: "USD".to_string(),
-                units: 1,
-                nanos: 3,
-            }),
-        }];
+        let file_name = "products.json";
+        let file = File::open(file_name).unwrap();
+        let reader = BufReader::new(file);
+    
+        let deserialized: Products = serde_json::from_reader(reader).unwrap();
+
+        let products = deserialized.products;
 
         let response: ListProductsResponse = ListProductsResponse {
             products,
