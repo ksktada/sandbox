@@ -11,10 +11,15 @@
 
 ## アーキテクチャ
 
+- 1サービス1クレートとする
+- Protocol Buffersは1ファイルを共有
+  - 分割できるかどうかは分からず
+
 ## サービス起動
 
 ```sh
 # at /path/to/online_boutiique
+# cargo run -p <service_name>
 cargo run -p productcatalogservice
 ```
 
@@ -37,10 +42,12 @@ resolver = "2"
 
 ```toml
 [package]
-name = "productcatalogservice" # サービス名
+# サービス名
+name = "productcatalogservice"
 version = "0.1.0"
 edition = "2021"
-default-run = "productcatalogservice" # デフォルトとするbinのnameを指定。--binで指定しないとこれが実行される
+# デフォルトとするbinのnameを指定。--binで指定しないとこれが実行される
+default-run = "productcatalogservice"
 build="../build.rs" # gRPC用のスタブを作成するスクリプト
 
 # サーバ
