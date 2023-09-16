@@ -9,11 +9,11 @@ build="../build.rs"
 
 [[bin]]
 name = "productcatalogservice"
-path = "src/server.rs"
+path = "src/bin/server.rs"
 
 [[bin]]
 name = "productcatalogservice-client"
-path = "src/client.rs"
+path = "src/bin/client.rs"
 
 [dependencies]
 tonic = "0.10.0"
