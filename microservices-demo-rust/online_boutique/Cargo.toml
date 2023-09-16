@@ -7,7 +7,9 @@ members = [
     "emailservice",
     "frontend",
     "paymentservice",
-    "productcatalogservice",
+    "productcatalogservice/domain",
+    "productcatalogservice/usecase",
+    "productcatalogservice/grpc",
     "recommendationservice",
     "shippingservice",
 ]
