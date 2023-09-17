@@ -15,8 +15,7 @@ use online_boutique::{
     SearchProductsResponse,
 };
 
-use productcatalogservice_domain::{MoneyDto, ProductDto};
-use productcatalogservice_usecase::{list_products, get_product, search_products};
+use usecase::{list_products, get_product, search_products, ProductDto, MoneyDto};
 
 #[derive(Debug, Default)]
 pub struct ProductCatalogServiceImpl {}

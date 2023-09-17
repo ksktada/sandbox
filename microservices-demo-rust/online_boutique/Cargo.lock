@@ -187,6 +187,14 @@ name = "currencyservice"
 version = "0.1.0"
 
 [[package]]
+name = "domain"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "either"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -623,34 +631,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "productcatalogservice-domain"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "productcatalogservice-grpc"
 version = "0.1.0"
 dependencies = [
- "productcatalogservice-domain",
- "productcatalogservice-usecase",
  "prost",
  "serde",
  "serde_json",
  "tokio",
  "tonic",
  "tonic-build",
-]
-
-[[package]]
-name = "productcatalogservice-usecase"
-version = "0.1.0"
-dependencies = [
- "productcatalogservice-domain",
- "serde",
- "serde_json",
+ "usecase",
 ]
 
 [[package]]
@@ -1091,6 +1081,15 @@ name = "unicode-ident"
 version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+
+[[package]]
+name = "usecase"
+version = "0.1.0"
+dependencies = [
+ "domain",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "want"
