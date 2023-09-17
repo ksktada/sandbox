@@ -1,7 +1,7 @@
 pub mod dto;
 
-use dto::ProductDto;
 use domain::model::{Product, Products};
+use dto::ProductDto;
 use std::fs::File;
 use std::io::BufReader;
 

@@ -9,7 +9,7 @@ pub struct Products {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all(deserialize = "camelCase"))]
 pub struct Product {
-    pub id: String, 
+    pub id: String,
     pub name: String,
     pub categories: Vec<String>,
     pub description: String,
