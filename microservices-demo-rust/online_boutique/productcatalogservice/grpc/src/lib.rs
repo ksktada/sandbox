@@ -3,7 +3,6 @@ use tonic::{transport::Server, Request, Response, Status};
 
 // online_boutique.proto 内のアイテムをモジュールとしてインポート
 mod online_boutique {
-    use serde::Deserialize;
     tonic::include_proto!("online_boutique");
 }
 
