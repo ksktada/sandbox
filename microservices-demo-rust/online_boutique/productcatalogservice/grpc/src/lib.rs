@@ -2,7 +2,7 @@ use tonic::transport::server::Router;
 use tonic::{transport::Server, Request, Response, Status};
 
 // online_boutique.proto 内のアイテムをモジュールとしてインポート
-pub mod online_boutique {
+mod online_boutique {
     use serde::Deserialize;
     tonic::include_proto!("online_boutique");
 }
@@ -19,7 +19,7 @@ use online_boutique::{
 use usecase::{get_product, list_products, search_products, MoneyDto, ProductDto};
 
 #[derive(Debug, Default)]
-pub struct ProductCatalogServiceImpl {}
+struct ProductCatalogServiceImpl {}
 
 impl From<MoneyDto> for Money {
     fn from(value: MoneyDto) -> Self {
