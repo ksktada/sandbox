@@ -32,14 +32,13 @@ impl From<Products> for ProductsDto {
 
 impl From<Product> for ProductDto {
     fn from(value: Product) -> Self {
-        let price_usd = value.price_usd.map(|money| money.into());
         Self {
             id: value.id,
             name: value.name,
             categories: value.categories,
             description: value.description,
             picture: value.picture,
-            price_usd,
+            price_usd: value.price_usd.map(|money| money.into()),
         }
     }
 }
