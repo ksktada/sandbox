@@ -32,10 +32,7 @@ impl From<Products> for ProductsDto {
 
 impl From<Product> for ProductDto {
     fn from(value: Product) -> Self {
-        let price_usd = match value.price_usd {
-            Some(money) => Some(money.into()),
-            None => None,
-        };
+        let price_usd = value.price_usd.map(|money| money.into());
         Self {
             id: value.id,
             name: value.name,

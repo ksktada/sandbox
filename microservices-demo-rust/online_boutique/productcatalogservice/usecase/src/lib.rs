@@ -21,17 +21,14 @@ pub fn list_products() -> Vec<ProductDto> {
 }
 
 pub fn get_product(product_id: &String) -> Option<ProductDto> {
-    match parse_catalog()
+    parse_catalog()
         .products
         .into_iter()
         .find(|e| &e.id == product_id)
-    {
-        Some(p) => Some(p.into()),
-        None => None,
-    }
+        .map(|p| p.into())
 }
 
-pub fn search_products(query: &String) -> Option<Vec<ProductDto>> {
+pub fn search_products(query: &str) -> Option<Vec<ProductDto>> {
     let results = parse_catalog()
         .products
         .into_iter()

@@ -19,17 +19,13 @@ impl From<MoneyDto> for Money {
 
 impl From<ProductDto> for Product {
     fn from(value: ProductDto) -> Self {
-        let price_usd = match value.price_usd {
-            Some(money_dto) => Some(money_dto.into()),
-            None => None,
-        };
         Self {
             id: value.id,
             name: value.name,
             categories: value.categories,
             description: value.description,
             picture: value.picture,
-            price_usd,
+            price_usd: value.price_usd.map(|m| m.into()),
         }
     }
 }
