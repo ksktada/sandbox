@@ -1,5 +1,7 @@
 use tonic::transport::server::Router;
 use tonic::{transport::Server, Request, Response, Status};
+use usecase::dto::{MoneyDto, ProductDto};
+use usecase::{get_product, list_products, search_products};
 
 // online_boutique.proto 内のアイテムをモジュールとしてインポート
 mod online_boutique {
@@ -14,8 +16,6 @@ use online_boutique::{
     Empty, GetProductRequest, ListProductsResponse, Money, Product, SearchProductsRequest,
     SearchProductsResponse,
 };
-
-use usecase::{get_product, list_products, search_products, MoneyDto, ProductDto};
 
 #[derive(Debug, Default)]
 struct ProductCatalogServiceImpl {}
@@ -63,6 +63,7 @@ impl ProductCatalogService for ProductCatalogServiceImpl {
         &self,
         request: Request<GetProductRequest>,
     ) -> Result<Response<Product>, Status> {
+        println!("Got a request: {:?}", request);
         let product_id = &request.get_ref().id;
         match get_product(product_id) {
             Some(product_dto) => Ok(Response::new(Product::from(product_dto))),
@@ -74,6 +75,7 @@ impl ProductCatalogService for ProductCatalogServiceImpl {
         &self,
         request: Request<SearchProductsRequest>,
     ) -> Result<Response<SearchProductsResponse>, Status> {
+        println!("Got a request: {:?}", request);
         let query = &request.get_ref().query;
         match search_products(query) {
             Some(products) => {

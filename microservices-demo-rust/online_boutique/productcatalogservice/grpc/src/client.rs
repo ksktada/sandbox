@@ -1,6 +1,5 @@
 // hello_server.proto 内のアイテムをモジュールとしてインポート
-pub mod online_boutique {
-    use serde::Deserialize;
+mod online_boutique {
     tonic::include_proto!("online_boutique");
 }
 
