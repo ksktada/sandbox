@@ -39,6 +39,7 @@ impl From<ProductDto> for Product {
     }
 }
 
+// pb の service を実装
 #[derive(Debug, Default)]
 struct ProductCatalogServiceImpl {}
 
