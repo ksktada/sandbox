@@ -1,6 +1,6 @@
-pub mod pb;
-use pb::online_boutique::product_catalog_service_client::ProductCatalogServiceClient;
-use pb::online_boutique::{Empty, GetProductRequest, SearchProductsRequest};
+use grpc::online_boutique;
+use online_boutique::product_catalog_service_client::ProductCatalogServiceClient;
+use online_boutique::{Empty, GetProductRequest, SearchProductsRequest};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

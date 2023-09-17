@@ -8,8 +8,7 @@ use std::io::BufReader;
 fn parse_catalog() -> Products {
     let file = File::open("products.json").unwrap();
     let reader = BufReader::new(file);
-    let products = serde_json::from_reader(reader).unwrap();
-    products
+    serde_json::from_reader(reader).unwrap()
 }
 
 pub fn list_products() -> Vec<ProductDto> {
@@ -24,7 +23,7 @@ pub fn get_product(product_id: &str) -> Option<ProductDto> {
     parse_catalog()
         .products
         .into_iter()
-        .find(|e| &e.id == product_id)
+        .find(|e| e.id == product_id)
         .map(|p| p.into())
 }
 

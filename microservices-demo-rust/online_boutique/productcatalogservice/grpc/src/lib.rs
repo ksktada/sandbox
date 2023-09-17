@@ -1,15 +1,43 @@
-pub mod pb;
+// online_boutique.proto 内のアイテムをモジュールとしてインポート
+pub mod online_boutique {
+    tonic::include_proto!("online_boutique");
+}
 
-use pb::online_boutique::product_catalog_service_server::{
+use online_boutique::product_catalog_service_server::{
     ProductCatalogService, ProductCatalogServiceServer,
 };
-use pb::online_boutique::{
-    Empty, GetProductRequest, ListProductsResponse, Product, SearchProductsRequest,
+use online_boutique::{
+    Empty, GetProductRequest, ListProductsResponse, Money, Product, SearchProductsRequest,
     SearchProductsResponse,
 };
 use tonic::transport::server::Router;
 use tonic::{transport::Server, Request, Response, Status};
+use usecase::dto::{MoneyDto, ProductDto};
 use usecase::{get_product, list_products, search_products};
+
+// dto -> pb 変換を実装
+impl From<MoneyDto> for Money {
+    fn from(value: MoneyDto) -> Self {
+        Self {
+            currency_code: value.currency_code,
+            units: value.units,
+            nanos: value.nanos,
+        }
+    }
+}
+
+impl From<ProductDto> for Product {
+    fn from(value: ProductDto) -> Self {
+        Self {
+            id: value.id,
+            name: value.name,
+            categories: value.categories,
+            description: value.description,
+            picture: value.picture,
+            price_usd: value.price_usd.map(|m| m.into()),
+        }
+    }
+}
 
 #[derive(Debug, Default)]
 struct ProductCatalogServiceImpl {}
