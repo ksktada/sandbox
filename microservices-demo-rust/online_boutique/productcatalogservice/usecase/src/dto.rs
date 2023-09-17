@@ -1,4 +1,4 @@
-use domain::{Money, Product, Products};
+use domain::model::{Money, Product, Products};
 
 pub struct ProductsDto {
     pub products: Vec<ProductDto>,
