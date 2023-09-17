@@ -15,7 +15,7 @@ use tonic::{transport::Server, Request, Response, Status};
 use usecase::dto::{MoneyDto, ProductDto};
 use usecase::{get_product, list_products, search_products};
 
-// dto -> pb 変換を実装
+// dto -> pbの変換を実装
 impl From<MoneyDto> for Money {
     fn from(value: MoneyDto) -> Self {
         Self {
@@ -39,7 +39,7 @@ impl From<ProductDto> for Product {
     }
 }
 
-// pb の service を実装
+// pbのserviceを実装
 #[derive(Debug, Default)]
 struct ProductCatalogServiceImpl {}
 
