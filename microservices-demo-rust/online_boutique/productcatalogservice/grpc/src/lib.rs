@@ -1,51 +1,18 @@
-use tonic::transport::server::Router;
-use tonic::{transport::Server, Request, Response, Status};
-use usecase::dto::{MoneyDto, ProductDto};
-use usecase::{get_product, list_products, search_products};
+pub mod pb;
 
-// online_boutique.proto 内のアイテムをモジュールとしてインポート
-mod online_boutique {
-    tonic::include_proto!("online_boutique");
-}
-
-// 上記モジュール内のアイテムを呼び出す
-use online_boutique::product_catalog_service_server::{
+use pb::online_boutique::product_catalog_service_server::{
     ProductCatalogService, ProductCatalogServiceServer,
 };
-use online_boutique::{
-    Empty, GetProductRequest, ListProductsResponse, Money, Product, SearchProductsRequest,
+use pb::online_boutique::{
+    Empty, GetProductRequest, ListProductsResponse, Product, SearchProductsRequest,
     SearchProductsResponse,
 };
+use tonic::transport::server::Router;
+use tonic::{transport::Server, Request, Response, Status};
+use usecase::{get_product, list_products, search_products};
 
 #[derive(Debug, Default)]
 struct ProductCatalogServiceImpl {}
-
-impl From<MoneyDto> for Money {
-    fn from(value: MoneyDto) -> Self {
-        Self {
-            currency_code: value.currency_code,
-            units: value.units,
-            nanos: value.nanos,
-        }
-    }
-}
-
-impl From<ProductDto> for Product {
-    fn from(value: ProductDto) -> Self {
-        let price_usd = match value.price_usd {
-            Some(money_dto) => Some(money_dto.into()),
-            None => None,
-        };
-        Self {
-            id: value.id,
-            name: value.name,
-            categories: value.categories,
-            description: value.description,
-            picture: value.picture,
-            price_usd,
-        }
-    }
-}
 
 #[tonic::async_trait]
 impl ProductCatalogService for ProductCatalogServiceImpl {
@@ -87,7 +54,7 @@ impl ProductCatalogService for ProductCatalogServiceImpl {
     }
 }
 
-pub fn router() -> Router {
-    let server = ProductCatalogServiceImpl::default();
-    Server::builder().add_service(ProductCatalogServiceServer::new(server))
+pub fn server() -> Router {
+    let service = ProductCatalogServiceImpl::default();
+    Server::builder().add_service(ProductCatalogServiceServer::new(service))
 }
