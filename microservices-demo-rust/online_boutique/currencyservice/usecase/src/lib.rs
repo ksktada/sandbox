@@ -15,5 +15,6 @@ pub async fn get_supported_currencies() -> Vec<CurrencyCode> {
 }
 
 pub async fn convert(from: &MoneyDto, to_code: &CurrencyCode) -> MoneyDto {
-    todo!()
+    let conversion_map = parse_currency_conversion();
+    todo!();
 }
