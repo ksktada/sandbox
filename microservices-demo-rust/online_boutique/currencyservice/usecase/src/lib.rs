@@ -10,6 +10,10 @@ fn parse_currency_conversion() -> HashMap<CurrencyCode, Rate> {
     serde_json::from_reader(reader).unwrap()
 }
 
+fn carry(unit: u32, nanos: u32) -> (u32, u32) {
+    todo!()
+}
+
 pub async fn get_supported_currencies() -> Vec<CurrencyCode> {
     parse_currency_conversion().into_keys().collect::<Vec<CurrencyCode>>()
 }
