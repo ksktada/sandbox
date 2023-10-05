@@ -20,6 +20,7 @@ pub async fn get_supported_currencies() -> Vec<CurrencyCode> {
 
 pub async fn convert(from: &MoneyDto, to_code: &CurrencyCode) -> MoneyDto {
     let conversion_map = parse_currency_conversion();
+    let euros = conversion_map.get(&from.currency_code);
     MoneyDto {
         currency_code: to_code.clone(),
         units: 1,
