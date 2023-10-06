@@ -14,6 +14,10 @@ async fn manual_hello() -> impl Responder {
     HttpResponse::Ok().body("Hey there!")
 }
 
+async fn index() -> impl Responder {
+    HttpResponse::Ok().body("scope/index")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
@@ -21,6 +25,10 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
+            .service(
+                web.scope("/scope")
+                .route("index", web::get().to(scope))
+            )
     })
     .shutdown_timeout(60)
     .workers(2)
