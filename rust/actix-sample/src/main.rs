@@ -20,7 +20,7 @@ async fn manual_hello() -> impl Responder {
 }
 
 // fn for scope
-async fn index() -> impl Responder {
+async fn scope() -> impl Responder {
     HttpResponse::Ok().body("scope/index")
 }
 
@@ -41,7 +41,7 @@ async fn main() -> std::io::Result<()> {
             .route("/hey", web::get().to(manual_hello))
             // scope
             .service(
-                web.scope("/scope")
+                web::scope("/scope")
                 .route("index", web::get().to(scope))
             )
             // state
