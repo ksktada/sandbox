@@ -1,6 +1,7 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use std::sync::Mutex;
 
+// basic
 #[get("/")]
 async fn hello() -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
@@ -64,6 +65,7 @@ async fn main() -> std::io::Result<()> {
                 app_name: String::from("Actix Web"),
             }))
             .service(state)
+            // mutable state
             .app_data(counter.clone()) // <- register the created data
             .route("/mutable_state", web::get().to(mutable_state))
     })
