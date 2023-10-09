@@ -1,4 +1,5 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use std::sync::Mutex;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -50,17 +51,14 @@ async fn main() -> std::io::Result<()> {
         counter: Mutex::new(0),
     });
 
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         App::new()
             // basic
             .service(hello)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
             // scope
-            .service(
-                web::scope("/scope")
-                .route("index", web::get().to(scope))
-            )
+            .service(web::scope("/scope").route("index", web::get().to(scope)))
             // state
             .app_data(web::Data::new(AppState {
                 app_name: String::from("Actix Web"),
