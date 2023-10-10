@@ -15,7 +15,10 @@ skill_map = {}
 # shift_jis ではなく cp932 を指定
 with open('./skill_list_item.csv', encoding="cp932") as f:
     reader = csv.reader(f)
-    header = next(reader) # ヘッダーをスキップ
+    # ヘッダーをスキップ
+    header = next(reader)
+
+    # 初回の行を取得
     first_row = next(reader)
 
     category_pre = first_row[0]
