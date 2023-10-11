@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "productcatalogservice/app",
+    "productcatalogservice/domain",
+    "productcatalogservice/grpc",
+    "productcatalogservice/usecase",
+]
+resolver = "2"
