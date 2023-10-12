@@ -1,0 +1,18 @@
+[package]
+name = "entry"
+version = "0.1.0"
+edition = "2021"
+default-run = "server"
+
+[[bin]]
+name = "server"
+path = "src/server.rs"
+
+[[bin]]
+name = "client"
+path = "src/client.rs"
+
+[dependencies]
+grpc = {path =  "../grpc"}
+tokio = { version = "1.32.0", features = ["rt-multi-thread", "macros"] }
+tonic = "0.10.0"
