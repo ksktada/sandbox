@@ -1,8 +1,0 @@
-[workspace]
-members = [
-    "entry",
-    "domain",
-    "grpc",
-    "usecase",
-]
-resolver = "2"
