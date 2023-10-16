@@ -39,8 +39,13 @@ with open('./skill_list_item.csv', encoding="cp932") as f:
 
     for nums, unique_name in enumerate(tqdm(skill_map.keys())):
         # formatはpngを指定(他にはPDF, PNG, SVGなどが指定可)
-        G = Digraph(format="pdf", engine="circo")
-        G.attr('node', shape='circle')
+        G = Digraph(format="svg", engine="dot")
+
+        # 横方向
+        G.attr('graph', rankdir="LR")
+
+        # 円状
+        # G.attr('node', shape='circle')
 
         # 文字化け防止のためフォントを指定
         G.attr('node', fontname = 'Meiryo UI')
