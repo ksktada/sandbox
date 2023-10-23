@@ -116,3 +116,5 @@
       - 例: 「Podを起動するWorkloadsリソース」と「そのWorkloadsリソースを外部公開するDiscovery＆LBリソース」など
   - コマンド
     - kubectl apply -f \<file_name\>.yaml
+    - kubectl delete -f \<file_name\>.yaml
+
