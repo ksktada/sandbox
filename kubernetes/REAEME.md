@@ -113,8 +113,20 @@
         ```
     - 設計
       - 1マニフェストに1リソースといった制限はない。複数リソースを記述できる
-      - 例: 「Podを起動するWorkloadsリソース」と「そのWorkloadsリソースを外部公開するDiscovery＆LBリソース」など
+        - 例: 「Podを起動するWorkloadsリソース」と「そのWorkloadsリソースを外部公開するDiscovery＆LBリソース」など
+      - 規模や要件によって適切な構成を選択すること
+        - 規模がそこまで大きくないマイクロサービスの場合、システム全体を構成する全てのマニフェストを1つのディレクトリにまとめるとよい
+          - 例
+            - ```plain
+              atode
+              ```
+        - 
   - コマンド
-    - kubectl apply -f \<file_name\>.yaml
-    - kubectl delete -f \<file_name\>.yaml
-
+    - 作成
+      - kubectl create -f \<file_name\>yaml (リソースがあるとエラーとなる)
+    - 変更
+      - kubectl apply -f \<file_name\>.yaml (作成時もcreateではなく常にこっちを使うこと(差分検知のため))
+    - 削除
+      - kubectl delete -f \<file_name\>.yaml
+    - 確認
+      - kubectl get pods
