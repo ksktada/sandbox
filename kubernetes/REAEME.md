@@ -131,3 +131,12 @@
       - kubectl delete -f \<file_name\>.yaml
     - 確認
       - kubectl get pods
+
+### メタ情報
+
+- アノテーション
+  - システムコンポーネントが利用するメタデータ
+- ラベル
+  - リソースの管理(主に分別するため)に利用するメタデータ
+  - 例1: kubectl get pods -l label1=val1, label2 (特定のラベルを持つデータを表示)
+  - 例2: kubectl get pods -L label1 (ラベルも表示)
