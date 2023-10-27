@@ -132,11 +132,17 @@
     - 確認
       - kubectl get pods
 
-### メタ情報
+### メタ情報(どちらもkey-value)
 
 - アノテーション
   - システムコンポーネントが利用するメタデータ
 - ラベル
   - リソースの管理(主に分別するため)に利用するメタデータ
-  - 例1: kubectl get pods -l label1=val1, label2 (特定のラベルを持つデータを表示)
-  - 例2: kubectl get pods -L label1 (ラベルも表示)
+    - 例1: kubectl get pods -l label1=val1, label2 (特定のラベルを持つデータを表示)
+    - 例2: kubectl get pods -L label1 (ラベルも表示)
+  - ラベルが衝突して予期せぬ動作が起こることを防ぐため、最初に付与する方針を決めること
+    - プロジェクト
+    - アプリケーション種類
+    - アプリケーションのバージョン
+    - 環境
+    - etc...
