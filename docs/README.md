@@ -36,3 +36,7 @@
 
 参考
 <https://zenn.dev/yoshiko/articles/91a3dd575f99a2>
+
+## Design
+
+![](./component_design/example.drawio.svg)
