@@ -98,6 +98,7 @@ fn draw_triangle(
     context.line_to(top.0, top.1);
     context.close_path();
     context.stroke();
+    context.fill();
 }
 
 fn midpoint(point_1: (f64, f64), point_2: (f64, f64)) -> (f64, f64) {
