@@ -35,3 +35,43 @@ npm run start
 ```
 
 ブラウザのデベロッパーツールのコンソールに「Hello World」と表示されたら成功。
+
+## 1章メモ
+
+```rust
+#[wasm_bindgen(start)]
+pub fn main_js() -> Result<(), JsValue> {
+```
+
+`wasm_bindgen...`はJavaScriptから`main_js`を呼び出せるようエクスポートする。  
+Rustは`Result`をethierっぽい感じで結果を表現している(leftが失敗、rightが成功)。  
+
+
+```rust
+let window = web_sys::window().unwrap();
+let document = window.document().unwrap();
+```
+
+JavaScriptの`window`と`document`を取得している。  
+
+```rust
+let canvas = document
+    .get_element_by_id("canvas")
+    .unwrap()
+    .dyn_into::<web_sys::HtmlCanvasElement>()
+    .unwrap();
+
+let context = canvas
+    .get_context("2d")
+    .unwrap()
+    .unwrap()
+    .dyn_into::<web_sys::CanvasRenderingContext2d>()
+    .unwrap();
+```
+
+`document`からid指定で`element`(DOM要素)を取得している。  
+`dyn_into`は`HtmlCanvasElement`にキャストしている。  
+`get_element_by_id`の返り値は`Element`型であり`HtmlCanvasElement`ではない。  
+`Element`のままだと`get_context`をコールできない。  
+(JavaScriptは動的型付け言語のためオブジェクトにメソッドがあればコールできる(なければ例外発生))  
+
