@@ -52,7 +52,7 @@ let window = web_sys::window().unwrap();
 let document = window.document().unwrap();
 ```
 
-JavaScriptの`window`と`document`を取得している。  
+JavaScriptの`Window`と`Document`を取得している。  
 
 ```rust
 let canvas = document
@@ -69,9 +69,10 @@ let context = canvas
     .unwrap();
 ```
 
-`document`からid指定で`element`(DOM要素)を取得している。  
+`Document`からid指定で`Element`(DOM要素)を取得している。  
 `dyn_into`は`HtmlCanvasElement`にキャストしている。  
 `get_element_by_id`の返り値は`Element`型であり`HtmlCanvasElement`ではない。  
 `Element`のままだと`get_context`をコールできない。  
 (JavaScriptは動的型付け言語のためオブジェクトにメソッドがあればコールできる(なければ例外発生))  
 
+`draw_triangle`は`CanvasRenderingContext2D`のメソッドを使って三角形を描画している。  
