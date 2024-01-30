@@ -44,7 +44,7 @@ pub fn main_js() -> Result<(), JsValue> {
 ```
 
 `wasm_bindgen...`はJavaScriptから`main_js`を呼び出せるようエクスポートする。  
-Rustは`Result`をethierっぽい感じで結果を表現している(leftが失敗、rightが成功)。  
+Rustは`Result`をEthierっぽい感じで結果を表現している(Leftが失敗、Rightが成功)。  
 
 
 ```rust
