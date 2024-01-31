@@ -76,3 +76,16 @@ let context = canvas
 (JavaScriptは動的型付け言語のためオブジェクトにメソッドがあればコールできる(なければ例外発生))  
 
 `draw_triangle`は`CanvasRenderingContext2D`のメソッドを使って三角形を描画している。  
+
+## 2章メモ
+
+```rust
+let image = web_sys::HtmlImageElement::new().unwrap();
+image.set_src("Idle (1).png");
+context.draw_image_with_html_image_element(&image, 0.0, 0.0);
+```
+
+`HtmlImageElement`は画像用の`Element`(つまりimageタグ)。  
+上記だけでは描画できない。  
+画像のロードを待つ必要がある。  
+
