@@ -117,4 +117,10 @@ wasm_bindgen_futures::spawn_local(async move {
 
 とても長い。。。  
 `wasm_bindgen_futures::spawn_local`は非同期関数(`Future`を返す関数)を実行するために必要な関数である。  
+(spawn...コンピュータの文脈では「サブプロセスを**生成する**」を意味する)  
+
+```mermaid
+
+
+```
 

@@ -1,8 +1,12 @@
 # Rust
 
+## 参考
+
+<https://www.oreilly.co.jp/books/9784873119786/>
+
 ## Install
 
-https://www.rust-lang.org/ja/tools/install
+<https://www.rust-lang.org/ja/tools/install>
 
 ## Cargo
 
@@ -39,3 +43,7 @@ rustup update
     - Cargo.lockは内部クレートで共存する
     - Cargoがよしなに解決してくれる
   - ただしそれぞれのクレートのCargo.tomlの`[dependencies]`に外部クレートは指定する必要あり
+
+### 非同期プログラミング
+
+wip  
