@@ -76,3 +76,11 @@ async_std::task::spawn_local(f)
 `await`するとでフューチャーの結果が取得できる。  
 
 非同期の場合は`spawn_local`を使用する。  
+
+```mermaid
+sequenceDiagram
+    main()->>cheapo_request():aaa
+    cheapo_request()-->>main():Future
+    participant tcp as TcpStream::connect()
+    cheapo_request()->>tcp:aaa
+```
