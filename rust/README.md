@@ -75,7 +75,7 @@ async_std::task::spawn_local(f)
 `async_std::task::JoinHandle`を返す(これもフューチャー)。  
 `await`するとでフューチャーの結果が取得できる。  
 
-非同期の場合は`spawn_local`を使用する。  
+非同期の場合は`async_std::task::spawn_local(f)`を使用する。  
 
 ```mermaid
 sequenceDiagram
@@ -83,4 +83,5 @@ sequenceDiagram
     cheapo_request()-->>main():Future
     participant tcp as TcpStream::connect()
     cheapo_request()->>tcp:aaa
+    tcp-->>cheapo_request:Future
 ```
