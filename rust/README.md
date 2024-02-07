@@ -83,5 +83,5 @@ sequenceDiagram
     cheapo_request()-->>main():Future
     participant tcp as TcpStream::connect()
     cheapo_request()->>tcp:aaa
-    tcp-->>cheapo_request:Future
+    tcp-->>cheapo_request():Future
 ```
