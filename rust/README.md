@@ -79,9 +79,11 @@ async_std::task::spawn_local(f)
 
 ```mermaid
 sequenceDiagram
-    main()->>cheapo_request():aaa
-    cheapo_request()-->>main():Future
+    main()->>cheapo_request(): cheapo_request()
+    cheapo_request()-->>main():A(=Future)
+    main()->>A: poll()
     participant tcp as TcpStream::connect()
-    cheapo_request()->>tcp:aaa
-    tcp-->>cheapo_request():Future
+    cheapo_request()->>tcp: TcpStream::connect()
+    tcp-->>cheapo_request(): B(=Future)
+    cheapo_request()->>B: poll
 ```
