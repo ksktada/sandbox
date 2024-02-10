@@ -76,6 +76,15 @@ async_std::task::spawn_local(f)
 `await`するとでフューチャーの結果が取得できる。  
 
 非同期の場合は`async_std::task::spawn_local(f)`を使用する。  
+(↑違うかも)
+
+```rust
+async_std::task::block_on()
+```
+
+タスクを起動し、その結果で現在のスレッドをブロックする。  
+この関数を呼び出すと、非同期タスクが生成されることを除けば  
+スレッドを生成してすぐにそのスレッドに参加するのと似ている。  
 
 ```mermaid
 sequenceDiagram
