@@ -47,6 +47,56 @@ rustup update
 
 ## メモ
 
+### 並列プログラミング
+
+`spawn`で新しいスレッドが起動する。  
+`join()`は全てのスレッドが終了するまで待機する。  
+
+```rust
+use std::thread;
+
+let handle = thread::spawn(|| {
+  println!("hello from a child thread");
+});
+
+let _ = handle.join();
+```
+
+スレッドの生存期間が確定できないため変数をそのまま借用させることはできない。  
+スレッド間でデータを共有するにはスマートポインタの`Arc`を使用する。  
+
+NG  
+```rust
+fn process_files_in_parallel(filenames: Vec<String>, glossary: &GigabyteMap) -> io::Result<()>
+{
+  ...
+  for worklist in worklists {
+    thread_handles.push(
+      spawn(move || process_files(worklist, glossary)) // error
+    );
+  }
+...
+}
+```
+
+OK  
+```rust
+use std::sync::Arc;
+fn process_files_in_parallel(filenames: Vec<String>, glossary: Arc<GigabyteMap>) -> io::Result<()>
+{
+  ... 
+  for worklist in worklists {
+  // ここでの.clone()は、Arcをクローンして参照カウンタを
+  // 増やすだけ。GigabyteMapをクローンするわけではない
+  let glossary_for_child = glossary.clone();
+    thread_handles.push(
+      spawn(move || process_files(worklist, &glossary_for_child))
+  );
+  }
+  ...
+}
+```
+
 ### 非同期プログラミング
 
 なぜ非同期プログラミングをするのか。  

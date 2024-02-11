@@ -3,6 +3,12 @@ use std::thread;
 use std::vec;
 
 fn main() {
+    let handle = thread::spawn(|| {
+        println!("Hello, Thread World!");
+    });
+
+    let _ = handle.join();
+    println!("Hello, Main World!");
     fork_and_join();
 }
 
