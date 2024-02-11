@@ -86,12 +86,12 @@ fn process_files_in_parallel(filenames: Vec<String>, glossary: Arc<GigabyteMap>)
 {
   ... 
   for worklist in worklists {
-  // ここでの.clone()は、Arcをクローンして参照カウンタを
-  // 増やすだけ。GigabyteMapをクローンするわけではない
-  let glossary_for_child = glossary.clone();
+    // ここでの.clone()は、Arcをクローンして参照カウンタを
+    // 増やすだけ。GigabyteMapをクローンするわけではない
+    let glossary_for_child = glossary.clone();
     thread_handles.push(
       spawn(move || process_files(worklist, &glossary_for_child))
-  );
+    );
   }
   ...
 }
