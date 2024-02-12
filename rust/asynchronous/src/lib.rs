@@ -22,7 +22,6 @@ impl ArcWake for Task {
 }
 
 pub struct Executor {
-    // ❶
     // 実行キュー
     sender: SyncSender<Arc<Task>>,
     receiver: Receiver<Arc<Task>>,
@@ -36,28 +35,31 @@ impl Executor {
             receiver,
         }
     }
-    // 新たにTask を生成するためのSpawner を作成 ❷
+    // 新たにTask を生成するためのSpawner を作成
     pub fn get_spawner(&self) -> Spawner {
         Spawner {
             sender: self.sender.clone(),
         }
     }
+
     pub fn run(&self) {
-        // ❸
         // チャネルからTask を受信して順に実行
         while let Ok(task) = self.receiver.recv() {
             // コンテキストを生成
             let mut future = task.future.lock().unwrap();
             let waker = waker_ref(&task);
             let mut ctx = Context::from_waker(&waker);
+
             // poll を呼び出し実行
             let _ = future.as_mut().poll(&mut ctx);
         }
     }
 }
+
 pub struct Spawner {
     sender: SyncSender<Arc<Task>>,
 }
+
 impl Spawner {
     pub fn spawn(&self, future: impl Future<Output = ()> + 'static + Send) {
         let future = future.boxed(); // Future をBox 化
