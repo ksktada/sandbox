@@ -26,6 +26,7 @@ pub struct Executor {
     sender: SyncSender<Arc<Task>>,
     receiver: Receiver<Arc<Task>>,
 }
+
 impl Executor {
     pub fn new() -> Self {
         // チャネルを生成。キューのサイズは最大1024 個
@@ -35,7 +36,7 @@ impl Executor {
             receiver,
         }
     }
-    // 新たにTask を生成するためのSpawner を作成
+    // 新たにTaskを生成するためのSpawnerを作成
     pub fn get_spawner(&self) -> Spawner {
         Spawner {
             sender: self.sender.clone(),
