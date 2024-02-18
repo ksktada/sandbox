@@ -108,6 +108,9 @@ fn process_files_in_parallel(filenames: Vec<String>, glossary: Arc<GigabyteMap>)
 >非同期タスクはスレッドに似ているが、生成に時間がかからず、効率的に処理を引き渡すこと
 ができ、メモリのオーバーヘッドはスレッドよりも桁違いに小さい。  
 
+CPUのコア数以上のスレッドを生成するとコンテキストスイッチ(処理を止めて状態を保存、的な)が発生する。  
+コア数以内でスレッドプールを作って割り当てる方式とするのがよい。  
+
 ```rust
 std::thread::spawn(c)
 ```
