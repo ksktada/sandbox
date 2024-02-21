@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Union
 from fastapi import FastAPI, Form
 from pydantic import BaseModel
@@ -13,11 +14,20 @@ class Item(BaseModel):
     price: float
     tax: Union[float, None] = None
 
+# Enum
+class ModelName(str, Enum):
+    alexnet = "alexnet"
+    resnet = "resnet"
+    lenet = "lenet"
+
 # get data simply
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
+# item_id must be `str`.
+# needy required and `str`.
+# skip and limit can be skip by adding default value.
 @app.get("/items/{item_id}")
 async def read_user_item(
     item_id: str, needy: str, skip: int = 0, limit: Union[int, None] = None
