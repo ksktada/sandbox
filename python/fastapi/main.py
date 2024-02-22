@@ -20,10 +20,16 @@ class ModelName(str, Enum):
     resnet = "resnet"
     lenet = "lenet"
 
-# get data simply
+# get data simply.
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+# get by path parameter.
+# item_id must be `int`.
+@app.get("/items/{item_id}")
+async def read_item(item_id: int):
+    return {"item_id": item_id}
 
 # item_id must be `str`.
 # needy required and `str`.
