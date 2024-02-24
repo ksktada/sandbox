@@ -9,13 +9,6 @@ app = FastAPI()
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
 
-class Item(BaseModel):
-    name: str
-    description: Union[str, None] = None
-    price: float
-    tax: Union[float, None] = None
-
-
 # Enum
 class ModelName(str, Enum):
     alexnet = "alexnet"
@@ -79,12 +72,24 @@ async def read_item(item_id: str, q: Union[str, None] = None, short: bool = Fals
     return item
 
 
+class Item(BaseModel):
+    name: str
+    description: Union[str, None] = None
+    price: float
+    tax: Union[float, None] = None
+
+
 # query parameter
 @app.get("/items/")
 async def read_item(skip: int = 0, limit: int = 10):
     return fake_items_db[skip : skip + limit]
 
 
+# if you specify the class inheritance BaseModel as argument,
+#   read request body as json
+#   convert to appropriate type
+#   validate data
+#   convert to Item
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: Item):
     return {"item_name": item.name, "item_id": item_id}
