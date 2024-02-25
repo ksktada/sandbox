@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Union
+from typing import Union, List
 from fastapi import FastAPI, Form
 from pydantic import BaseModel
 
@@ -77,6 +77,7 @@ class Item(BaseModel):
     description: Union[str, None] = None
     price: float
     tax: Union[float, None] = None
+    tags: List[str] = []
 
 
 # query parameter
