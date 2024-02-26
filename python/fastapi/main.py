@@ -72,12 +72,18 @@ async def read_item(item_id: str, q: Union[str, None] = None, short: bool = Fals
     return item
 
 
+class Image(BaseModel):
+    url: str
+    name: str
+
+
 class Item(BaseModel):
     name: str
     description: Union[str, None] = None
     price: float
     tax: Union[float, None] = None
     tags: List[str] = []
+    image: Union[Image, None] = None
 
 
 # query parameter
