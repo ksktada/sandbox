@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Union, List
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, status
 from pydantic import BaseModel
 
 # uvicorn main:app --reload
@@ -118,3 +118,8 @@ async def create_item2(
 ):
     item = Item(name=name, description=description, price=price, tax=tax)
     return item
+
+# status
+@app.post("/items3/", status_code=status.HTTP_201_CREATED)
+async def create_item3(name: str):
+    return {"name": name}
