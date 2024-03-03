@@ -8,7 +8,7 @@
   - HTTPメソッドの`...`には実際の処理をする関数を渡す
     - `hello`は関数
 
-## Basic
+## 基本
 
 ```rust
 #[tokio::main]
