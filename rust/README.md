@@ -139,6 +139,8 @@ async_std::task::block_on()
 この関数を呼び出すと、非同期タスクが生成されることを除けば  
 スレッドを生成してすぐにそのスレッドに参加するのと似ている。  
 
+(途中)  
+
 ```mermaid
 sequenceDiagram
     main()->>cheapo_request(): cheapo_request()
