@@ -17,7 +17,7 @@ async fn main() {
         .route("/hello", get(hello))
         .route("/users", post(create_user));
 
-    let app = app.fallback(handler_404);
+    let app = app.fallback(handler_not_found);
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
@@ -47,7 +47,7 @@ async fn create_user(
     (StatusCode::CREATED, Json(user))
 }
 
-async fn handler_404() -> impl IntoResponse {
+async fn handler_not_found() -> impl IntoResponse {
     (StatusCode::NOT_FOUND, "nothing to see here")
 }
 
