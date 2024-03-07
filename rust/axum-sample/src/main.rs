@@ -64,6 +64,7 @@ struct User {
     username: String,
 }
 
+// the fn for graceful shutdown
 async fn shutdown_signal() {
     let ctrl_c = async {
         signal::ctrl_c()
