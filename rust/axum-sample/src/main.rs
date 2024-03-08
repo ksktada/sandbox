@@ -31,6 +31,7 @@ async fn hello() -> &'static str {
     "Hello, World!"
 }
 
+// fn for json request
 async fn create_user(
     // this argument tells axum to parse the request body
     // as JSON into a `CreateUser` type
@@ -47,6 +48,7 @@ async fn create_user(
     (StatusCode::CREATED, Json(user))
 }
 
+// fn for 404 handling
 async fn handler_not_found() -> impl IntoResponse {
     (StatusCode::NOT_FOUND, "nothing to see here")
 }
