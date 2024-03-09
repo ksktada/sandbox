@@ -48,11 +48,6 @@ async fn create_user(
     (StatusCode::CREATED, Json(user))
 }
 
-// fn for 404 handling
-async fn handler_not_found() -> impl IntoResponse {
-    (StatusCode::NOT_FOUND, "nothing to see here")
-}
-
 // the input to our `create_user` handler
 #[derive(Deserialize)]
 struct CreateUser {
@@ -64,6 +59,11 @@ struct CreateUser {
 struct User {
     id: u64,
     username: String,
+}
+
+// fn for 404 handling
+async fn handler_not_found() -> impl IntoResponse {
+    (StatusCode::NOT_FOUND, "nothing to see here")
 }
 
 // the fn for graceful shutdown
