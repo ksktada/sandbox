@@ -1,7 +1,10 @@
 // https://github.com/tokio-rs/axum
 
 use axum::{
-    http::StatusCode, response::IntoResponse, routing::{get, post}, Json, Router
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, post},
+    Json, Router,
 };
 use serde::{Deserialize, Serialize};
 use tokio::signal;
