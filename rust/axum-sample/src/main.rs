@@ -1,10 +1,7 @@
 // https://github.com/tokio-rs/axum
 
 use axum::{
-    http::StatusCode,
-    response::IntoResponse,
-    routing::{get, post},
-    Json, Router,
+    extract::Path, http::StatusCode, response::IntoResponse, routing::{get, post}, Json, Router
 };
 use serde::{Deserialize, Serialize};
 use tokio::signal;
@@ -18,7 +15,8 @@ async fn main() {
     let app = Router::new()
         .route("/", get(|| async { "Hello, Root!" }))
         .route("/hello", get(hello))
-        .route("/users", post(create_user));
+        .route("/users", post(create_user))
+        .route("/user/:id", get(get_user));
 
     let app = app.fallback(handler_not_found);
 
@@ -34,11 +32,10 @@ async fn hello() -> &'static str {
     "Hello, World!"
 }
 
-// fn for json request
-async fn create_user(
-    // this argument tells axum to parse the request body
-    // as JSON into a `CreateUser` type
-    Json(payload): Json<CreateUser>,
+// sample fn for json request
+// this argument tells axum to parse the request body
+// as JSON into a `CreateUser` type
+async fn create_user(Json(payload): Json<CreateUser>,
 ) -> (StatusCode, Json<User>) {
     // insert your application logic here
     let user = User {
@@ -62,6 +59,15 @@ struct CreateUser {
 struct User {
     id: u64,
     username: String,
+}
+
+// sample fn for path parameter
+async fn get_user(Path(id): Path<u64>) -> (StatusCode, Json<User>) {
+    let user = User {
+        id: id.clone(),
+        username: "Path".to_string()
+    };
+    (StatusCode::OK, Json(user))
 }
 
 // fn for 404 handling
