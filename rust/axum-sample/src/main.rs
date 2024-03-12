@@ -1,7 +1,7 @@
 // https://github.com/tokio-rs/axum
 
 use axum::{
-    extract::Path, http::StatusCode, response::IntoResponse, routing::{get, post}, Json, Router
+    extract::{Path, Query}, http::StatusCode, response::IntoResponse, routing::{get, post}, Json, Router
 };
 use serde::{Deserialize, Serialize};
 use tokio::signal;
@@ -16,7 +16,8 @@ async fn main() {
         .route("/", get(|| async { "Hello, Root!" }))
         .route("/hello", get(hello))
         .route("/users", post(create_user))
-        .route("/user/:id", get(get_user));
+        .route("/user/:id", get(get_user))
+        .route("/user2", get(get_user2));
 
     let app = app.fallback(handler_not_found);
 
@@ -64,8 +65,23 @@ struct User {
 // sample fn for path parameter
 async fn get_user(Path(id): Path<u64>) -> (StatusCode, Json<User>) {
     let user = User {
-        id: id.clone(),
+        id: id,
         username: "Path".to_string()
+    };
+    (StatusCode::OK, Json(user))
+}
+
+// the input to our `create_user` handler
+#[derive(Deserialize)]
+struct GetUser {
+    id: u64,
+}
+
+// sample fn for query parameter
+async fn get_user2(Query(user): Query<GetUser>) -> (StatusCode, Json<User>) {
+    let user = User {
+        id: user.id,
+        username: "Query".to_string()
     };
     (StatusCode::OK, Json(user))
 }
