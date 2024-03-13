@@ -1,7 +1,7 @@
 // https://github.com/tokio-rs/axum
 
 use axum::{
-    extract::{Path, Query}, http::StatusCode, response::IntoResponse, routing::{get, post}, Json, Router
+    extract::{Path, Query}, http::StatusCode, response::IntoResponse, routing::{get, post}, Form, Json, Router
 };
 use serde::{Deserialize, Serialize};
 use tokio::signal;
@@ -16,6 +16,7 @@ async fn main() {
         .route("/", get(|| async { "Hello, Root!" }))
         .route("/hello", get(hello))
         .route("/users", post(create_user))
+        .route("/users2", post(create_user2))
         .route("/user/:id", get(get_user))
         .route("/user2", get(get_user2));
 
@@ -84,6 +85,19 @@ async fn get_user2(Query(user): Query<GetUser>) -> (StatusCode, Json<User>) {
         username: "Query".to_string()
     };
     (StatusCode::OK, Json(user))
+}
+
+async fn create_user2(Form(payload): Form<CreateUser>,
+) -> (StatusCode, Json<User>) {
+    // insert your application logic here
+    let user = User {
+        id: 2222,
+        username: payload.username,
+    };
+
+    // this will be converted into a JSON response
+    // with a status code of `201 Created`
+    (StatusCode::CREATED, Json(user))
 }
 
 // fn for 404 handling
