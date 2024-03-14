@@ -1,7 +1,11 @@
 // https://github.com/tokio-rs/axum
 
 use axum::{
-    extract::{Path, Query}, http::StatusCode, response::IntoResponse, routing::{get, post}, Form, Json, Router
+    extract::{Path, Query},
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, post},
+    Form, Json, Router,
 };
 use serde::{Deserialize, Serialize};
 use tokio::signal;
@@ -37,8 +41,7 @@ async fn hello() -> &'static str {
 // sample fn for json request
 // this argument tells axum to parse the request body
 // as JSON into a `CreateUser` type
-async fn create_user(Json(payload): Json<CreateUser>,
-) -> (StatusCode, Json<User>) {
+async fn create_user(Json(payload): Json<CreateUser>) -> (StatusCode, Json<User>) {
     // insert your application logic here
     let user = User {
         id: 1337,
@@ -67,7 +70,7 @@ struct User {
 async fn get_user(Path(id): Path<u64>) -> (StatusCode, Json<User>) {
     let user = User {
         id: id,
-        username: "Path".to_string()
+        username: "Path".to_string(),
     };
     (StatusCode::OK, Json(user))
 }
@@ -82,13 +85,12 @@ struct GetUser {
 async fn get_user2(Query(user): Query<GetUser>) -> (StatusCode, Json<User>) {
     let user = User {
         id: user.id,
-        username: "Query".to_string()
+        username: "Query".to_string(),
     };
     (StatusCode::OK, Json(user))
 }
 
-async fn create_user2(Form(payload): Form<CreateUser>,
-) -> (StatusCode, Json<User>) {
+async fn create_user2(Form(payload): Form<CreateUser>) -> (StatusCode, Json<User>) {
     // insert your application logic here
     let user = User {
         id: 2222,
