@@ -3,7 +3,7 @@
 use axum::{
     extract::{Path, Query},
     http::StatusCode,
-    response::IntoResponse,
+    response::{IntoResponse, Response},
     routing::{get, post},
     Form, Json, Router,
 };
@@ -22,7 +22,8 @@ async fn main() {
         .route("/users", post(create_user))
         .route("/users2", post(create_user2))
         .route("/user/:id", get(get_user))
-        .route("/user2", get(get_user2));
+        .route("/user2", get(get_user2))
+        .route("/make-error", get(make_error));
 
     let app = app.fallback(handler_not_found);
 
@@ -100,6 +101,41 @@ async fn create_user2(Form(payload): Form<CreateUser>) -> (StatusCode, Json<User
     // this will be converted into a JSON response
     // with a status code of `201 Created`
     (StatusCode::CREATED, Json(user))
+}
+
+// Make our own error that wraps `anyhow::Error`.
+struct AppError(anyhow::Error);
+
+// Tell axum how to convert `AppError` into a response.
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            format!("Something went wrong: {}", self.0),
+        )
+            .into_response()
+    }
+}
+
+// This enables using `?` on functions that return `Result<_, anyhow::Error>` to turn them into
+// `Result<_, AppError>`. That way you don't need to do that manually.
+impl<E> From<E> for AppError
+where
+    E: Into<anyhow::Error>,
+{
+    fn from(err: E) -> Self {
+        Self(err.into())
+    }
+}
+
+// fn make error intentionally
+async fn make_error() -> Result<(), AppError> {
+    try_thing()?;
+    Ok(())
+}
+
+fn try_thing() -> Result<(), anyhow::Error> {
+    anyhow::bail!("it failed!")
 }
 
 // fn for 404 handling
