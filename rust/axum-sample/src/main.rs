@@ -91,6 +91,7 @@ async fn get_user2(Query(user): Query<GetUser>) -> (StatusCode, Json<User>) {
     (StatusCode::OK, Json(user))
 }
 
+// sample handler for form request
 async fn create_user2(Form(payload): Form<CreateUser>) -> (StatusCode, Json<User>) {
     // insert your application logic here
     let user = User {
