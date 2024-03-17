@@ -1,12 +1,16 @@
 // https://github.com/tokio-rs/axum
 
 use axum::{
-    extract::{Path, Query},
+    async_trait,
+    body::{Body, Bytes},
+    extract::{FromRequest, Path, Query, Request},
     http::StatusCode,
+    middleware::{self, Next},
     response::{IntoResponse, Response},
     routing::{get, post},
     Form, Json, Router,
 };
+use http_body_util::BodyExt;
 use serde::{Deserialize, Serialize};
 use tokio::signal;
 
@@ -23,7 +27,8 @@ async fn main() {
         .route("/users2", post(create_user2))
         .route("/user/:id", get(get_user))
         .route("/user2", get(get_user2))
-        .route("/make-error", get(make_error));
+        .route("/make-error", get(make_error))
+        .layer(middleware::from_fn(print_request_body));
 
     let app = app.fallback(handler_not_found);
 
@@ -129,14 +134,65 @@ where
     }
 }
 
-// fn make error intentionally
+// handler for making error intentionally
 async fn make_error() -> Result<(), AppError> {
     try_thing()?;
     Ok(())
 }
 
+// fn make error
 fn try_thing() -> Result<(), anyhow::Error> {
     anyhow::bail!("it failed!")
+}
+
+// middleware that shows how to consume the request body upfront
+async fn print_request_body(request: Request, next: Next) -> Result<impl IntoResponse, Response> {
+    let request = buffer_request_body(request).await?;
+
+    Ok(next.run(request).await)
+}
+
+// the trick is to take the request apart, buffer the body, do what you need to do, then put
+// the request back together
+async fn buffer_request_body(request: Request) -> Result<Request, Response> {
+    let (parts, body) = request.into_parts();
+
+    // this wont work if the body is an long running stream
+    let bytes = body
+        .collect()
+        .await
+        .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()).into_response())?
+        .to_bytes();
+
+    do_thing_with_request_body(bytes.clone());
+
+    Ok(Request::from_parts(parts, Body::from(bytes)))
+}
+
+fn do_thing_with_request_body(bytes: Bytes) {
+    tracing::debug!(body = ?bytes);
+}
+
+// extractor that shows how to consume the request body upfront
+struct BufferRequestBody(Bytes);
+
+// we must implement `FromRequest` (and not `FromRequestParts`) to consume the body
+#[async_trait]
+impl<S> FromRequest<S> for BufferRequestBody
+where
+    S: Send + Sync,
+{
+    type Rejection = Response;
+
+    async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
+        let body = Bytes::from_request(req, state)
+            .await
+            .map_err(|err| err.into_response())?;
+
+        do_thing_with_request_body(body.clone());
+
+        Ok(Self(body))
+    }
 }
 
 // fn for 404 handling
