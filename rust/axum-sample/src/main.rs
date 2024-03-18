@@ -13,11 +13,18 @@ use axum::{
 use http_body_util::BodyExt;
 use serde::{Deserialize, Serialize};
 use tokio::signal;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
 async fn main() {
     // initialize tracing
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::registry()
+        .with(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "example_consume_body_in_extractor_or_middleware=debug".into()),
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
 
     // build our application with a single route
     let app = Router::new()
