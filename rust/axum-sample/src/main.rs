@@ -51,6 +51,19 @@ async fn hello() -> &'static str {
     "Hello, World!"
 }
 
+// the input to our `create_user` handler
+#[derive(Deserialize)]
+struct CreateUser {
+    username: String,
+}
+
+// the output to our `create_user` handler
+#[derive(Serialize)]
+struct User {
+    id: u64,
+    username: String,
+}
+
 // sample fn for json request
 // this argument tells axum to parse the request body
 // as JSON into a `CreateUser` type
@@ -64,19 +77,6 @@ async fn create_user(Json(payload): Json<CreateUser>) -> (StatusCode, Json<User>
     // this will be converted into a JSON response
     // with a status code of `201 Created`
     (StatusCode::CREATED, Json(user))
-}
-
-// the input to our `create_user` handler
-#[derive(Deserialize)]
-struct CreateUser {
-    username: String,
-}
-
-// the output to our `create_user` handler
-#[derive(Serialize)]
-struct User {
-    id: u64,
-    username: String,
 }
 
 // sample fn for path parameter
@@ -126,7 +126,7 @@ impl IntoResponse for AppError {
             StatusCode::INTERNAL_SERVER_ERROR,
             format!("Something went wrong: {}", self.0),
         )
-            .into_response()
+        .into_response()
     }
 }
 
@@ -142,6 +142,7 @@ where
 }
 
 // handler for making error intentionally
+// Result<T, E> ... T and E need to be implemented IntoResponse
 async fn make_error() -> Result<(), AppError> {
     try_thing()?;
     Ok(())
