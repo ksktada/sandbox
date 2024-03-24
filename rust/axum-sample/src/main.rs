@@ -1,18 +1,21 @@
 // https://github.com/tokio-rs/axum
 
+use std::net::SocketAddr;
+
 use axum::{
     async_trait,
     body::{Body, Bytes},
     extract::{FromRequest, Path, Query, Request},
-    http::StatusCode,
+    http::{HeaderValue, Method, StatusCode},
     middleware::{self, Next},
-    response::{IntoResponse, Response},
+    response::{Html, IntoResponse, Response},
     routing::{get, post},
     Form, Json, Router,
 };
 use http_body_util::BodyExt;
 use serde::{Deserialize, Serialize};
 use tokio::signal;
+use tower_http::cors::CorsLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -26,27 +29,60 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    // build our application with a single route
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, Root!" }))
-        .route("/hello", get(hello))
-        .route("/users", post(create_user))
-        .route("/users2", post(create_user2))
-        .route("/user/:id", get(get_user))
-        .route("/user2", get(get_user2))
-        .route("/make-error", get(make_error))
-        .layer(middleware::from_fn(print_request_body));
+    let frontend = async {
+        let app = Router::new().route("/", get(html));
+        serve(app, 3000).await;
+    };
 
-    let app = app.fallback(handler_not_found);
+    let backend = async {
+        // build our application with a single route
+        let app = Router::new()
+            .route("/", get(|| async { "Hello, Root!" }))
+            .route("/hello", get(hello))
+            .route("/users", post(create_user))
+            .route("/users2", post(create_user2))
+            .route("/user/:id", get(get_user))
+            .route("/user2", get(get_user2))
+            .route("/make-error", get(make_error))
+            .route("/json", get(json))
+            .layer(middleware::from_fn(print_request_body))
+            .layer(
+                CorsLayer::new()
+                    .allow_origin("http://localhost:3000".parse::<HeaderValue>().unwrap())
+                    .allow_methods([Method::GET]),
+            );
 
-    // run our app with hyper, listening globally on port 3000
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+        let app = app.fallback(handler_not_found);
+        serve(app, 4000).await;
+    };
+
+    tokio::join!(frontend, backend);
+}
+
+async fn serve(app: Router, port: u16) {
+    let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
         .await
         .unwrap();
 }
 
+async fn html() -> impl IntoResponse {
+    Html(
+        r#"
+        <script>
+            fetch('http://localhost:4000/json')
+              .then(response => response.json())
+              .then(data => console.log(data));
+        </script>
+        "#,
+    )
+}
+
+async fn json() -> impl IntoResponse {
+    Json(vec!["one", "two", "three"])
+}
 async fn hello() -> &'static str {
     "Hello, World!"
 }
@@ -126,7 +162,7 @@ impl IntoResponse for AppError {
             StatusCode::INTERNAL_SERVER_ERROR,
             format!("Something went wrong: {}", self.0),
         )
-        .into_response()
+            .into_response()
     }
 }
 
