@@ -80,9 +80,11 @@ async fn html() -> impl IntoResponse {
     )
 }
 
+// for frontend
 async fn json() -> impl IntoResponse {
     Json(vec!["one", "two", "three"])
 }
+
 async fn hello() -> &'static str {
     "Hello, World!"
 }

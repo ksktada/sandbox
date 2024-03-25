@@ -20,3 +20,6 @@
     - パスパラメータ、クエリ、フォーム、JSONなんでもござれ
   - `IntoResponse`は自前で実装しなくてもだいたいのものは実装されている
     - `String`、`Result<T, E>`、`StatusCode`、タプル、etc
+    - エラーとかを独自定義する場合は自前で実装する
+      - ResultのLeftとか
+
