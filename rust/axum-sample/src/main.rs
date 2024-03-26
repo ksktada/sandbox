@@ -59,6 +59,7 @@ async fn main() {
     tokio::join!(frontend, backend);
 }
 
+// common fn for launching server
 async fn serve(app: Router, port: u16) {
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
@@ -68,6 +69,7 @@ async fn serve(app: Router, port: u16) {
         .unwrap();
 }
 
+// for frontend
 async fn html() -> impl IntoResponse {
     Html(
         r#"
