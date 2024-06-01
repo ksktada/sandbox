@@ -51,7 +51,7 @@ fn process_files_in_parallel(filenames: Vec<String>) -> io::Result<()> {
     Ok(())
 }
 
-fn split_vec_into_chunks(filenames: Vec<String>, n_threads: usize) -> Vec<Vec<String>> {
+fn split_vec_into_chunks(_filenames: Vec<String>, _n_threads: usize) -> Vec<Vec<String>> {
     vec![
         vec!["file1.txt".to_string()],
         vec!["file2.txt".to_string()],
@@ -77,6 +77,6 @@ fn process(text: String) -> String {
     text.to_string()
 }
 
-fn save(document: &String, results: String) -> io::Result<()> {
+fn save(_document: &String, _results: String) -> io::Result<()> {
     Ok(())
 }
