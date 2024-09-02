@@ -5,6 +5,9 @@
 プログラミングRust 第2版
 <https://www.oreilly.co.jp/books/9784873119786/>
 
+並行プログラミング入門  
+<https://www.oreilly.co.jp/books/9784873119595/>
+
 ## Install
 
 <https://www.rust-lang.org/ja/tools/install>
@@ -150,4 +153,27 @@ sequenceDiagram
     cheapo_request()->>tcp: TcpStream::connect()
     tcp-->>cheapo_request(): B(=Future)
     cheapo_request()->>B: poll
+```
+
+### 原理から
+
+- コルーチン
+  - 中断と再開ができる関数の総称
+  - 分類
+    - 対称コルーチン
+      - 再開する関数名を明示的に指定して、関数の中断と、再開する関数の実行を行う。
+    - 非対称コルーチン
+      - 関数の中断箇所が関数内で定義されている
+      - 関数を実行すると中断箇所まで実行される
+      - 関数をもう一度実行すると関数が次の中断箇所で実行される
+      - Pythonのジェネレータ
+- Rustのコルーチン
+  - コルーチン自体はないが、同等の動作をする関数を関数を実装できる
+  - 以下を定義する
+    - 状態を持つ構造体
+    - 状態
+    - 実行関数
+
+```rust
+
 ```

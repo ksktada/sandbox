@@ -3,6 +3,9 @@ use asynchronous::{Executor, Hello};
 
 fn main() {
     let executor = Executor::new();
-    executor.get_spawner().spawn(Hello::new());
+    executor.get_spawner().spawn(async {
+        let h = Hello::new();
+        h.await;
+    });
     executor.run();
 }
